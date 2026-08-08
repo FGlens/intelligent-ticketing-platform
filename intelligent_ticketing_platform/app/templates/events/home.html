@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block title %}Home - Intelligent Ticketing Platform{% endblock %}
+
+{% block content %}
+<div class="hero">
+    <h1>Discover Amazing Events</h1>
+    <p>Book tickets easily. Get personalized recommendations powered by Machine Learning.</p>
+</div>
+
+<div class="search-bar">
+    <form action="{{ url_for('events.search') }}" method="GET">
+        <input type="text" name="q" placeholder="Search events..." value="{{ search_query or '' }}">
+        <select name="category">
+            <option value="">All Categories</option>
+            <option value="Music">Music</option>
+            <option value="Sports">Sports</option>
+            <option value="Technology">Technology</option>
+            <option value="Arts">Arts</option>
+            <option value="Business">Business</option>
+            <option value="Education">Education</option>
+        </select>
+        <button type="submit">Search</button>
+    </form>
+</div>
+
+<section class="events-grid">
+    <h2>Upcoming Events</h2>
+    {% if events %}
+        <div class="grid">
+            {% for event in events %}
+            <div class="event-card">
+                <div class="event-info">
+                    <span class="category">{{ event.category }}</span>
+                    <h3>{{ event.title }}</h3>
+                    <p class="location">📍 {{ event.location }}</p>
+                    <p class="date">📅 {{ event.event_date.strftime('%d %b %Y, %I:%M %p') }}</p>
+                    <p class="price">₦{{ "%.2f"|format(event.price) }}</p>
+                    <p class="tickets">{{ event.available_tickets }} tickets left</p>
+                    <a href="{{ url_for('events.event_detail', event_id=event.id) }}" class="btn">View Details</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="no-events">No upcoming events found.</p>
+    {% endif %}
+</section>
+{% endblock %}

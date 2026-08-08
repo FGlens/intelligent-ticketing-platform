@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}My Bookings{% endblock %}
+
+{% block content %}
+<h2 style="margin:30px 0;">My Bookings</h2>
+
+{% if bookings %}
+    <div class="grid">
+        {% for booking in bookings %}
+        <div class="event-card">
+            <div class="event-info">
+                <h3>{{ booking.event.title }}</h3>
+                <p class="date">📅 {{ booking.event.event_date.strftime('%d %b %Y') }}</p>
+                <p>Quantity: {{ booking.quantity }}</p>
+                <p class="price">Total: ₦{{ "%.2f"|format(booking.total_amount) }}</p>
+                <p>Status: <strong>{{ booking.status }}</strong></p>
+                <p style="font-size:0.85rem; color:#6b7280;">Booked on {{ booking.booking_date.strftime('%d %b %Y') }}</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <p class="no-events">You have no bookings yet. <a href="{{ url_for('events.home') }}">Browse events</a></p>
+{% endif %}
+{% endblock %}

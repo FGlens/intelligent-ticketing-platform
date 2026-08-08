@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}Book Tickets - {{ event.title }}{% endblock %}
+
+{% block content %}
+<div class="form-container">
+    <h2>Book Tickets</h2>
+    <p style="margin-bottom:20px;"><strong>{{ event.title }}</strong></p>
+    <p>Price per ticket: ₦{{ "%.2f"|format(event.price) }}</p>
+    <p>Available: {{ event.available_tickets }}</p>
+    
+    <form method="POST" style="margin-top:25px;">
+        <div class="form-group">
+            <label for="quantity">Number of Tickets</label>
+            <input type="number" id="quantity" name="quantity" min="1" max="{{ event.available_tickets }}" value="1" required>
+        </div>
+        <button type="submit" class="btn-primary">Confirm Booking</button>
+    </form>
+    
+    <p style="text-align:center; margin-top:20px;">
+        <a href="{{ url_for('events.event_detail', event_id=event.id) }}">← Back to event</a>
+    </p>
+</div>
+{% endblock %}

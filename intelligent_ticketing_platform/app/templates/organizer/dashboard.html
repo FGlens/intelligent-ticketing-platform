@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}Organizer Dashboard{% endblock %}
+
+{% block content %}
+<div style="display:flex; justify-content:space-between; align-items:center; margin:30px 0;">
+    <h2>My Events</h2>
+    <a href="{{ url_for('organizer.create_event') }}" class="btn">+ Create New Event</a>
+</div>
+
+{% if events %}
+    <div class="grid">
+        {% for event in events %}
+        <div class="event-card">
+            <div class="event-info">
+                <span class="category">{{ event.category }}</span>
+                <h3>{{ event.title }}</h3>
+                <p class="date">📅 {{ event.event_date.strftime('%d %b %Y') }}</p>
+                <p>Sold: {{ event.total_tickets - event.available_tickets }} / {{ event.total_tickets }}</p>
+                <p class="price">₦{{ "%.2f"|format(event.price) }}</p>
+                <div style="margin-top:15px; display:flex; gap:10px;">
+                    <a href="{{ url_for('events.event_detail', event_id=event.id) }}" class="btn" style="padding:8px 14px; font-size:0.9rem;">View</a>
+                    <a href="{{ url_for('organizer.predict_demand', event_id=event.id) }}" class="btn" style="padding:8px 14px; font-size:0.9rem; background:#10b981;">Predict Demand</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <p class="no-events">You haven't created any events yet.</p>
+{% endif %}
+{% endblock %}

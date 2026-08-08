@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}Recommended For You{% endblock %}
+
+{% block content %}
+<div class="hero" style="padding:30px;">
+    <h1>Recommended For You</h1>
+    <p>Personalized suggestions based on your preferences and booking history (Content-Based Filtering)</p>
+</div>
+
+<section class="events-grid">
+    {% if events %}
+        <div class="grid">
+            {% for event in events %}
+            <div class="event-card">
+                <div class="event-info">
+                    <span class="category">{{ event.category }}</span>
+                    <h3>{{ event.title }}</h3>
+                    <p class="location">📍 {{ event.location }}</p>
+                    <p class="date">📅 {{ event.event_date.strftime('%d %b %Y') }}</p>
+                    <p class="price">₦{{ "%.2f"|format(event.price) }}</p>
+                    <a href="{{ url_for('events.event_detail', event_id=event.id) }}" class="btn">View Details</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="no-events">
+            No recommendations yet. Book some events or set your preferred categories in your profile!
+        </p>
+    {% endif %}
+</section>
+{% endblock %}
